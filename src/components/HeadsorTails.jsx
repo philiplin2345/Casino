@@ -2,6 +2,7 @@
 import Transfer from "./Wallet/components/Transfer";
 import Text from "antd/lib/typography/Text";
 import { useEffect, useState } from "react";
+import { useMoralis, useNFTBalances } from "react-moralis";
 import NativeBalance from "./NativeBalance";
 import Address from "./Address/Address";
 import Blockie from "./Blockie";
@@ -26,32 +27,211 @@ const styles = {
     fontSize: "16px",
     fontWeight: "500",
   },
+  select: {
+    marginTop: "20px",
+    display: "flex",
+    alignItems: "center",
+  },
 };
 
 function HeadsorTails() {
+  const { Moralis, chainId, account } = useMoralis();
   const [amount, setAmount] = useState();
   const [side, setSide] = useState(0);
-  async function flip(side) {
-    // let amount = document.getElementById("amount").value;
-    // alert(side + " " + amount);
-    // let web3Provider = await Moralis.enableWeb3();
-    // console.log(web3.version);
-    // let contractInstance = new ethers.Contract(
-    //   "0xA744aF6bD7767738dDE56C18626CF8282eA5A035",
-    //   window.abi,
-    //   web3Provider.getSigner(),
-    // );
-    // // let contractInstance = new web3.eth.Contract(window.abi,"0x06eE0Cbd7821C89416Dc606D8440eb688f93b416")
-    // // let contractInstance = await ethereum.request({method: 'contract', params:[{jsonInterface:window.abi, address:"0x06eE0Cbd7821C89416Dc606D8440eb688f93b416" }] })
-    // contractInstance.on("bet", (user, bet, win, side) => {
-    //   console.log(user, bet, win, side);
-    // });
-    // console.log(contractInstance);
-    // let results = contractInstance.flip(side == "heads" ? 0 : 1, {
-    //   value: amount,
-    //   from: ethereum.selectedAddress,
-    //   gasLimit: 99999,
-    // });
+  const ethers = Moralis.web3Library;
+  const abi = [
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: "address",
+          name: "previousOwner",
+          type: "address",
+        },
+        {
+          indexed: true,
+          internalType: "address",
+          name: "newOwner",
+          type: "address",
+        },
+      ],
+      name: "OwnershipTransferred",
+      type: "event",
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: "address",
+          name: "user",
+          type: "address",
+        },
+        {
+          indexed: true,
+          internalType: "uint256",
+          name: "bet",
+          type: "uint256",
+        },
+        {
+          indexed: true,
+          internalType: "bool",
+          name: "win",
+          type: "bool",
+        },
+        {
+          indexed: false,
+          internalType: "uint8",
+          name: "side",
+          type: "uint8",
+        },
+      ],
+      name: "bet",
+      type: "event",
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: "address",
+          name: "owner",
+          type: "address",
+        },
+        {
+          indexed: false,
+          internalType: "uint256",
+          name: "funding",
+          type: "uint256",
+        },
+      ],
+      name: "funded",
+      type: "event",
+    },
+    {
+      inputs: [],
+      name: "ContractBalance",
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
+      stateMutability: "view",
+      type: "function",
+      constant: true,
+    },
+    {
+      inputs: [],
+      name: "owner",
+      outputs: [
+        {
+          internalType: "address",
+          name: "",
+          type: "address",
+        },
+      ],
+      stateMutability: "view",
+      type: "function",
+      constant: true,
+    },
+    {
+      inputs: [],
+      name: "renounceOwnership",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [
+        {
+          internalType: "address",
+          name: "newOwner",
+          type: "address",
+        },
+      ],
+      name: "transferOwnership",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [
+        {
+          internalType: "uint8",
+          name: "side",
+          type: "uint8",
+        },
+      ],
+      name: "flip",
+      outputs: [
+        {
+          internalType: "bool",
+          name: "",
+          type: "bool",
+        },
+      ],
+      stateMutability: "payable",
+      type: "function",
+      payable: true,
+    },
+    {
+      inputs: [],
+      name: "withdrawAll",
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [],
+      name: "getBalance",
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
+      stateMutability: "view",
+      type: "function",
+      constant: true,
+    },
+    {
+      inputs: [],
+      name: "fundContract",
+      outputs: [],
+      stateMutability: "payable",
+      type: "function",
+      payable: true,
+    },
+  ];
+  async function flip() {
+    alert(side + " " + amount);
+    let web3Provider = await Moralis.enableWeb3();
+    let contractInstance = new ethers.Contract(
+      "0x9F199957E2B6Fb97971C8386027266E1c8bae00d",
+      abi,
+      web3Provider.getSigner(),
+    );
+    // let contractInstance = new web3.eth.Contract(window.abi,"0x06eE0Cbd7821C89416Dc606D8440eb688f93b416")
+    // let contractInstance = await ethereum.request({method: 'contract', params:[{jsonInterface:window.abi, address:"0x06eE0Cbd7821C89416Dc606D8440eb688f93b416" }] })
+    contractInstance.on("bet", (user, bet, win, side) => {
+      console.log(user, bet, win, side);
+    });
+    console.log(contractInstance);
+    let results = contractInstance.flip(side, {
+      value: amount,
+      from: account,
+      gasLimit: 99999,
+    });
   }
   function handleChange(value) {
     if (value === "Heads") setSide(1);
@@ -73,10 +253,10 @@ function HeadsorTails() {
         </div>
       }
     >
-      <div style={styles.card}>
+      <div style={{ alignItems: "center", width: "100%" }}>
         <div style={styles.tranfer}>
           <div style={styles.header}>
-            <h3>Heads or tails win to double</h3>
+            <h3>Heads or tails Win to double</h3>
           </div>
           <div style={styles.select}>
             <div style={styles.textWrapper}>
