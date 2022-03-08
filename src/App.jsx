@@ -14,6 +14,7 @@ import ERC20Transfers from "components/ERC20Transfers";
 import DEX from "components/DEX";
 import NFTBalance from "components/NFTBalance";
 import Wallet from "components/Wallet";
+import HeadsorTails from "components/HeadsorTails";
 import { Layout, Tabs } from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "components/NativeBalance";
@@ -92,6 +93,9 @@ const App = ({ isServerInfo }) => {
             </Route>
             <Route path="/wallet">
               <Wallet />
+            </Route>
+            <Route path="/headsortails">
+              <HeadsorTails />
             </Route>
             <Route path="/1inch">
               <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
