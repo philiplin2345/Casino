@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/Casino/static/css/main.8ed4dda1.chunk.css",
+    "main.js": "/Casino/static/js/main.cbf337bc.chunk.js",
+    "main.js.map": "/Casino/static/js/main.cbf337bc.chunk.js.map",
+    "runtime-main.js": "/Casino/static/js/runtime-main.4914eb81.js",
+    "runtime-main.js.map": "/Casino/static/js/runtime-main.4914eb81.js.map",
+    "static/css/2.7393f959.chunk.css": "/Casino/static/css/2.7393f959.chunk.css",
+    "static/js/2.eff36020.chunk.js": "/Casino/static/js/2.eff36020.chunk.js",
+    "static/js/2.eff36020.chunk.js.map": "/Casino/static/js/2.eff36020.chunk.js.map",
+    "index.html": "/Casino/index.html",
+    "service-worker.js": "/Casino/service-worker.js",
+    "service-worker.js.map": "/Casino/service-worker.js.map",
+    "static/css/2.7393f959.chunk.css.map": "/Casino/static/css/2.7393f959.chunk.css.map",
+    "static/css/main.8ed4dda1.chunk.css.map": "/Casino/static/css/main.8ed4dda1.chunk.css.map",
+    "static/js/2.eff36020.chunk.js.LICENSE.txt": "/Casino/static/js/2.eff36020.chunk.js.LICENSE.txt",
+    "static/media/Coin98.1e4e4073.png": "/Casino/static/media/Coin98.1e4e4073.png",
+    "static/media/MathWallet.c8223809.svg": "/Casino/static/media/MathWallet.c8223809.svg",
+    "static/media/SafePal.482d45d2.svg": "/Casino/static/media/SafePal.482d45d2.svg",
+    "static/media/TokenPocket.977e38ab.svg": "/Casino/static/media/TokenPocket.977e38ab.svg",
+    "static/media/wallet-connect.488dc369.svg": "/Casino/static/media/wallet-connect.488dc369.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4914eb81.js",
+    "static/css/2.7393f959.chunk.css",
+    "static/js/2.eff36020.chunk.js",
+    "static/css/main.8ed4dda1.chunk.css",
+    "static/js/main.cbf337bc.chunk.js"
+  ]
+}
