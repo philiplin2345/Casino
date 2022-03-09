@@ -29,6 +29,8 @@ const { Header, Footer } = Layout;
 const styles = {
   content: {
     display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     justifyContent: "center",
     fontFamily: "Roboto, sans-serif",
     color: "#041836",
@@ -96,6 +98,7 @@ const App = ({ isServerInfo }) => {
             </Route>
             <Route path="/headsortails">
               <HeadsorTails />
+              <ERC20Transfers />
             </Route>
             <Route path="/1inch">
               <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>

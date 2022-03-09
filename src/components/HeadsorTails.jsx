@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 import Transfer from "./Wallet/components/Transfer";
 import Text from "antd/lib/typography/Text";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useMoralis, useNFTBalances } from "react-moralis";
 import NativeBalance from "./NativeBalance";
 import Address from "./Address/Address";
 import Blockie from "./Blockie";
 import { Card, Button, Input, notification, Select, Option } from "antd";
+import ERC20Transfers from "./ERC20Transfers";
 
 const styles = {
   title: {
@@ -32,13 +33,29 @@ const styles = {
     display: "flex",
     alignItems: "center",
   },
+  break: {
+    display: "block",
+  },
 };
 
 function HeadsorTails() {
   const { Moralis, chainId, account } = useMoralis();
   const [amount, setAmount] = useState();
   const [side, setSide] = useState(0);
+  const [contractBalance, setContractBalance] = useState(0);
   const ethers = Moralis.web3Library;
+  // async function getContractBalance() {
+  //   let web3Provider = await Moralis.enableWeb3();
+  //   let contractInstance = new ethers.Contract(
+  //     "0x9F199957E2B6Fb97971C8386027266E1c8bae00d",
+  //     abi,
+  //     web3Provider,
+  //   );
+  //   let a = await contractInstance.getBalance();
+  //   console.log(a);
+  //   setContractBalance(a);
+  // }
+  // const calculation = useMemo(() => getContractBalance(), [contractBalance]);
   const abi = [
     {
       anonymous: false,
@@ -213,6 +230,7 @@ function HeadsorTails() {
       payable: true,
     },
   ];
+
   async function flip() {
     alert(side + " " + amount);
     let web3Provider = await Moralis.enableWeb3();
@@ -227,11 +245,14 @@ function HeadsorTails() {
       console.log(user, bet, win, side);
     });
     console.log(contractInstance);
-    let results = contractInstance.flip(side, {
+    await contractInstance.flip(side, {
       value: amount,
       from: account,
       gasLimit: 99999,
     });
+    let a = await contractInstance.getBalance();
+    console.log(a);
+    setContractBalance(a);
   }
   function handleChange(value) {
     if (value === "Heads") setSide(1);
@@ -241,56 +262,69 @@ function HeadsorTails() {
   useEffect(() => {
     console.log(side);
     console.log(amount);
-  }, [side, amount]);
+    console.log(contractBalance);
+  }, [side, amount, contractBalance]);
+  // useEffect(() => {
+  //   async () => {
+  //     console.log(await getContractBalance());
+  //   };
+  //   console.log(contractBalance);
+  // }, [contractBalance]);
   return (
-    <Card
-      style={styles.card}
-      title={
-        <div style={styles.header}>
-          <Blockie scale={5} avatar currentWallet style />
-          <Address size="6" copyable />
-          <NativeBalance />
-        </div>
-      }
-    >
-      <div style={{ alignItems: "center", width: "100%" }}>
-        <div style={styles.tranfer}>
+    <>
+      <Card
+        style={styles.card}
+        title={
           <div style={styles.header}>
-            <h3>Heads or tails Win to double</h3>
+            <Blockie scale={5} avatar currentWallet style />
+            <Address size="6" copyable />
+            <p>
+              Address Balance:{" "}
+              {parseFloat(Moralis.Units.FromWei(contractBalance)).toFixed(6)}
+            </p>
+            <NativeBalance />
           </div>
-          <div style={styles.select}>
-            <div style={styles.textWrapper}>
-              <Text strong>Heads or tails:</Text>
-              <Select onChange={handleChange} size="large">
-                <Select.Option value="Heads">Heads</Select.Option>
-                <Select.Option value="Tails">Tails</Select.Option>
-              </Select>
+        }
+      >
+        <div style={{ alignItems: "center", width: "100%" }}>
+          <div style={styles.tranfer}>
+            <div style={styles.header}>
+              <h3>Heads or tails Win to double</h3>
             </div>
-          </div>
-          <div style={styles.select}>
-            <div style={styles.textWrapper}>
-              <Text strong>Amount:</Text>
+            <div style={styles.select}>
+              <div style={styles.textWrapper}>
+                <Text strong>Heads or tails:</Text>
+                <Select onChange={handleChange} size="large">
+                  <Select.Option value="Heads">Heads</Select.Option>
+                  <Select.Option value="Tails">Tails</Select.Option>
+                </Select>
+              </div>
             </div>
-            <Input
+            <div style={styles.select}>
+              <div style={styles.textWrapper}>
+                <Text strong>Amount:</Text>
+              </div>
+              <Input
+                size="large"
+                onChange={(e) => {
+                  setAmount(`${e.target.value}`);
+                }}
+              />
+            </div>
+            <Button
+              type="primary"
               size="large"
-              onChange={(e) => {
-                setAmount(`${e.target.value}`);
-              }}
-            />
+              // loading={isPending}
+              style={{ width: "100%", marginTop: "25px" }}
+              onClick={() => flip()}
+              // disabled={!tx}
+            >
+              Place bet
+            </Button>
           </div>
-          <Button
-            type="primary"
-            size="large"
-            // loading={isPending}
-            style={{ width: "100%", marginTop: "25px" }}
-            onClick={() => flip()}
-            // disabled={!tx}
-          >
-            Place bet
-          </Button>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </>
   );
 }
 
