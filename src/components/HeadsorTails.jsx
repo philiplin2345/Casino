@@ -8,6 +8,7 @@ import Address from "./Address/Address";
 import Blockie from "./Blockie";
 import { Card, Button, Input, notification, Select, Option } from "antd";
 import ERC20Transfers from "./ERC20Transfers";
+import BetLog from "./BetLog";
 
 const styles = {
   title: {
@@ -43,6 +44,7 @@ function HeadsorTails() {
   const [amount, setAmount] = useState();
   const [side, setSide] = useState(0);
   const [contractBalance, setContractBalance] = useState(0);
+  const [betCount, setBetCount] = useState(0);
   const ethers = Moralis.web3Library;
   // async function getContractBalance() {
   //   let web3Provider = await Moralis.enableWeb3();
@@ -243,6 +245,7 @@ function HeadsorTails() {
     // let contractInstance = await ethereum.request({method: 'contract', params:[{jsonInterface:window.abi, address:"0x06eE0Cbd7821C89416Dc606D8440eb688f93b416" }] })
     contractInstance.on("bet", (user, bet, win, side) => {
       console.log(user, bet, win, side);
+      setBetCount(betCount + 1);
     });
     console.log(contractInstance);
     await contractInstance.flip(side, {
@@ -250,6 +253,7 @@ function HeadsorTails() {
       from: account,
       gasLimit: 99999,
     });
+
     let a = await contractInstance.getBalance();
     console.log(a);
     setContractBalance(a);
@@ -324,6 +328,7 @@ function HeadsorTails() {
           </div>
         </div>
       </Card>
+      <BetLog totalBets={betCount} />
     </>
   );
 }

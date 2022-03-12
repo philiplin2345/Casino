@@ -3,14 +3,31 @@ import { useMoralis, useERC20Balances, useMoralisQuery } from "react-moralis";
 import { Skeleton, Table } from "antd";
 import { getEllipsisTxt } from "../helpers/formatters";
 
-function BetLog(props) {
-  const { data: assets } = useERC20Balances(props);
+function BetLog({ totalBets }) {
+  console.log(totalBets);
   const { Moralis } = useMoralis();
-  const { data: flips } = useMoralisQuery("Flips");
+  const { data: flips } = useMoralisQuery(
+    "FlipsNew",
+    (query) => query.descending("updatedAt"),
+    [totalBets],
+  );
   const fetchFlips = JSON.parse(
-    JSON.stringify(flips, ["user", "address", "bet", "side", "win"]),
+    JSON.stringify(flips, [
+      "user",
+      "address",
+      "bet",
+      "side",
+      "win",
+      "updatedAt",
+    ]),
   );
   const columns = [
+    {
+      title: "Time",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (updatedAt) => updatedAt,
+    },
     {
       title: "User",
       dataIndex: "user",
@@ -40,7 +57,7 @@ function BetLog(props) {
   return (
     <div style={{ width: "65vw", padding: "15px" }}>
       <h1>💰Bet Log</h1>
-      <Skeleton loading={!fetchFlips}>
+      <Skeleton loading={!fetchFlips} totalBets={totalBets}>
         <Table
           dataSource={fetchFlips}
           columns={columns}
