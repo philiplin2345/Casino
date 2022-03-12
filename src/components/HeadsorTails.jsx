@@ -249,7 +249,7 @@ function HeadsorTails() {
     });
     console.log(contractInstance);
     await contractInstance.flip(side, {
-      value: amount,
+      value: Moralis.Units.Token(amount, "18"),
       from: account,
       gasLimit: 99999,
     });
@@ -311,7 +311,7 @@ function HeadsorTails() {
               <Input
                 size="large"
                 onChange={(e) => {
-                  setAmount(`${Moralis.Units.Token(e.target.value, "18")}`);
+                  setAmount(`${e.target.value}`);
                 }}
               />
             </div>
