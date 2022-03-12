@@ -24,7 +24,6 @@ import Contract from "components/Contract/Contract";
 import Text from "antd/lib/typography/Text";
 import Ramper from "components/Ramper";
 import MenuItems from "./components/MenuItems";
-import BetLog from "components/BetLog";
 const { Header, Footer } = Layout;
 
 const styles = {
@@ -99,7 +98,6 @@ const App = ({ isServerInfo }) => {
             </Route>
             <Route path="/headsortails">
               <HeadsorTails />
-              <BetLog />
             </Route>
             <Route path="/1inch">
               <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>

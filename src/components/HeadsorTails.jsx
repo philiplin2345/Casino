@@ -260,7 +260,7 @@ function HeadsorTails() {
   }
   function handleChange(value) {
     if (value === "Heads") setSide(1);
-    if (value === "Tails") setSide(-1);
+    if (value === "Tails") setSide(0);
     console.log(value, side);
   }
   useEffect(() => {
@@ -306,12 +306,12 @@ function HeadsorTails() {
             </div>
             <div style={styles.select}>
               <div style={styles.textWrapper}>
-                <Text strong>Amount:</Text>
+                <Text strong>Amount (ETH):</Text>
               </div>
               <Input
                 size="large"
                 onChange={(e) => {
-                  setAmount(`${e.target.value}`);
+                  setAmount(`${Moralis.Units.Token(e.target.value, "18")}`);
                 }}
               />
             </div>

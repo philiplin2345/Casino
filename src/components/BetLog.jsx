@@ -57,7 +57,7 @@ function BetLog({ totalBets }) {
   return (
     <div style={{ width: "65vw", padding: "15px" }}>
       <h1>💰Bet Log</h1>
-      <Skeleton loading={!fetchFlips} totalBets={totalBets}>
+      <Skeleton loading={!fetchFlips}>
         <Table
           dataSource={fetchFlips}
           columns={columns}
