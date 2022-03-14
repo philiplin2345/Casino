@@ -282,10 +282,6 @@ function HeadsorTails() {
           <div style={styles.header}>
             <Blockie scale={5} avatar currentWallet style />
             <Address size="6" copyable />
-            <p>
-              Address Balance:{" "}
-              {parseFloat(Moralis.Units.FromWei(contractBalance)).toFixed(6)}
-            </p>
             <NativeBalance />
           </div>
         }
@@ -295,6 +291,10 @@ function HeadsorTails() {
             <div style={styles.header}>
               <h3>Heads or tails Win to double</h3>
             </div>
+            <p style={styles.header}>
+              Contract Balance:{" "}
+              {parseFloat(Moralis.Units.FromWei(contractBalance)).toFixed(6)}
+            </p>
             <div style={styles.select}>
               <div style={styles.textWrapper}>
                 <Text strong>Heads or tails:</Text>
