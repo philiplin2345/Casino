@@ -1,7 +1,7 @@
 import { useMoralis, useNativeBalance } from "react-moralis";
 
 function NativeBalance(props) {
-  const { data: balance } = useNativeBalance(props);
+  const { data: balance } = useNativeBalance(props, [props.totalBets]);
   const { account, isAuthenticated } = useMoralis();
 
   if (!account || !isAuthenticated) return null;
